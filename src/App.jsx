@@ -1,33 +1,23 @@
-import React, { useState, createContext, useEffect } from 'react';
-import './App.css';
+import { ThemeProvider } from './context/ThemeContext';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Experience from './components/Experience';
+import Projects from './components/Projects';
+import Skills from './components/Skills';
+import Footer from './components/Footer';
+import './index.css';
 
-export const DarkModeContext = createContext();
-
-function App({ children }) {
-  const [darkMode, setDarkMode] = useState(true);
-
-// Apply dark mode to the entire HTML document
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-    }
-  }, [darkMode]);
-
+export default function App() {
   return (
-    <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
-      <div className={`min-h-screen transition-colors duration-300 ${
-        darkMode 
-          ? 'bg-gray-900 text-white' 
-          : 'bg-white text-gray-900'
-      }`}>
-        {children}
-      </div>
-    </DarkModeContext.Provider>
+    <ThemeProvider>
+      <Navbar />
+      <main>
+        <Hero />
+        <Experience />
+        <Projects />
+        <Skills />
+      </main>
+      <Footer />
+    </ThemeProvider>
   );
 }
-
-export default App;

@@ -1,68 +1,175 @@
-import React, { useContext } from 'react';
-import { Eye, MessageSquare } from 'lucide-react';
-import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
-import { DarkModeContext } from '../App';
-import profile from '../assets/profile.jpg'
+import { useState, useEffect, useRef } from 'react';
+import { Github, Linkedin, Twitter } from 'lucide-react';
+import { personalInfo } from '../data';
 
-const Hero = () => {
-  const { darkMode } = useContext(DarkModeContext);
-  const handleViewProjects = () => {
-    document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-  };
+function Typewriter({ texts }) {
+  const [idx, setIdx]         = useState(0);
+  const [shown, setShown]     = useState('');
+  const [phase, setPhase]     = useState('typing');
+  const [charIdx, setCharIdx] = useState(0);
 
-  const handleContactMe = () => {
-    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    let t;
+    const word = texts[idx];
+    if (phase === 'typing') {
+      if (charIdx < word.length) {
+        t = setTimeout(() => { setShown(word.slice(0, charIdx + 1)); setCharIdx(c => c + 1); }, 65);
+      } else {
+        t = setTimeout(() => setPhase('erasing'), 2200);
+      }
+    } else {
+      if (charIdx > 0) {
+        t = setTimeout(() => { setShown(word.slice(0, charIdx - 1)); setCharIdx(c => c - 1); }, 38);
+      } else { setIdx(i => (i + 1) % texts.length); setPhase('typing'); }
+    }
+    return () => clearTimeout(t);
+  }, [phase, charIdx, idx, texts]);
+
   return (
-    <section id="home" className="pt-24 pb-16 relative overflow-hidden min-h-screen flex items-center ">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
-      </div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col lg:flex-row items-center justify-center">
-          <div className="w-full max-w-2xl">
+    <span style={{ color: 'var(--fg-2)', fontWeight: 700 }}>
+      {shown}<span className="cursor" />
+    </span>
+  );
+}
 
-            {/* Profile Image */}
-            <div className="w-48 h-48 mx-auto mb-8 relative group">
-              <div className="w-full h-full rounded-full bg-gradient-to-r from-purple-400 to-pink-400 p-1 ">
-                <div className="w-full h-full rounded-full bg-gray-800 flex items-center justify-center">
-                  <div className="w-44 h-44 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-6xl">
-                    <img src={profile} alt="profile" className='rounded-full' />
-                  </div>
-                </div>
-              </div>
+const SOCIALS = [
+  { key: 'github',   Icon: Github,   label: 'GitHub' },
+  { key: 'linkedin', Icon: Linkedin, label: 'LinkedIn' },
+  { key: 'twitter',  Icon: Twitter,  label: 'X (Twitter)' },
+];
+
+export default function Hero() {
+  const [vis, setVis] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setVis(true), 80); return () => clearTimeout(t); }, []);
+
+  const anim = (delay = 0) => ({
+    opacity: vis ? 1 : 0,
+    transform: vis ? 'translateY(0)' : 'translateY(28px)',
+    transition: `opacity 0.65s ease ${delay}s, transform 0.65s ease ${delay}s`,
+  });
+
+  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+  return (
+    <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 80, background: 'var(--bg)' }}>
+      <div className="wrap" style={{ width: '100%', paddingTop: '2rem', paddingBottom: '4rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '1.75rem' }}>
+
+          {/* Avatar */}
+          <div style={{ ...anim(0), position: 'relative' }}>
+            <div style={{
+              width: 148, height: 148, borderRadius: '50%', overflow: 'hidden',
+              border: '2px solid var(--border-strong)',
+              boxShadow: 'var(--shadow-md)',
+              background: 'var(--bg-subtle)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <img
+                src={personalInfo.avatar} alt={personalInfo.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={e => {
+                  e.target.style.display = 'none';
+                  const p = e.target.parentElement;
+                  p.style.fontSize = '2.5rem'; p.style.fontWeight = '700';
+                  p.style.color = 'var(--fg-3)';
+                  p.innerHTML = personalInfo.name.split(' ').map(n => n[0]).join('');
+                }}
+              />
             </div>
-            <div className="text-center">
-              <h1 className={`text-5xl lg:text-6xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Hey, I'm <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse">Akshay Ladne</span>✨
-              </h1>
-              <h2 className={`text-3xl lg:text-4xl font-bold mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                A <span className="text-purple-400">Frontend Developer</span>
-              </h2>
-              <p className={`text-lg mb-8 leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                A <span className="font-semibold">frontend developer</span> with solid foundations in <span className="font-semibold">design</span>.<br />
-                passionate about crafting <span className="font-semibold">seamless user experiences</span> I thrive at the intersection<br />
-                of creativity and functionality.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <button onClick={handleContactMe} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-200 transform hover:scale-105 flex items-center gap-2">
-                  <MessageSquare size={20} />
-                  Contact Me
-                </button>
-                <button onClick={handleViewProjects} className={`border-2 ${darkMode ? 'border-gray-600 text-gray-300 hover:border-gray-500' : 'border-gray-300 text-gray-700 hover:border-gray-400'} px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 flex items-center gap-2`}>
-                  <Eye size={20} />
-                  View Projects
-                </button>
-              </div>
+            {/* Status dot */}
+            {/* <span style={{
+              position: 'absolute', bottom: 8, right: 8,
+              width: 14, height: 14, borderRadius: '50%',
+              background: 'var(--fg-muted)',
+              border: '2px solid var(--bg)',
+            }} /> */}
+          </div>
+
+          {/* Name */}
+          <div style={anim(0.1)}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--fg-muted)', marginBottom: '0.4rem', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              Available for work
+            </p>
+            <h1 style={{
+              fontSize: 'clamp(2.4rem, 5.5vw, 3.6rem)',
+              fontWeight: 800, color: 'var(--fg)',
+              letterSpacing: '-0.035em', lineHeight: 1.05, margin: 0,
+            }}>
+              {personalInfo.name}
+            </h1>
+          </div>
+
+          {/* Typewriter */}
+          <div style={{ ...anim(0.2), fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', minHeight: '2rem' }}>
+            <Typewriter texts={personalInfo.taglines} />
+          </div>
+
+          {/* Description */}
+          <p style={{ ...anim(0.3), maxWidth: 520, color: 'var(--fg-3)', fontSize: '1rem', lineHeight: 1.8, margin: 0 }}>
+            I build fast, accessible, and beautiful web experiences — from database to deployment.
+          </p>
+
+          {/* Social icons */}
+          <div style={{ ...anim(0.35), display: 'flex', gap: '0.65rem' }}>
+            {SOCIALS.map(({ key, Icon, label }) => (
+              <a
+                key={key} href={personalInfo.social[key]}
+                target="_blank" rel="noopener noreferrer"
+                aria-label={label} id={`hero-social-${key}`}
+                style={{
+                  width: 42, height: 42, borderRadius: 10,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                  color: 'var(--fg-3)', textDecoration: 'none',
+                  transition: 'all 0.22s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'var(--fg)';
+                  e.currentTarget.style.color = 'var(--bg)';
+                  e.currentTarget.style.borderColor = 'var(--fg)';
+                  e.currentTarget.style.transform = 'translateY(-3px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'var(--bg-subtle)';
+                  e.currentTarget.style.color = 'var(--fg-3)';
+                  e.currentTarget.style.borderColor = 'var(--border)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                <Icon size={18} />
+              </a>
+            ))}
+          </div>
+
+          {/* CTAs */}
+          <div style={{ ...anim(0.4), display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button className="btn btn-primary" onClick={() => scrollTo('projects')}>
+              View Projects
+            </button>
+            <button className="btn btn-ghost" onClick={() => scrollTo('contact')}>
+              Contact Me
+            </button>
+          </div>
+
+          {/* Scroll indicator */}
+          <div style={{ ...anim(0.5) }}>
+            <div style={{
+              width: 22, height: 36, border: '1.5px solid var(--border-strong)',
+              borderRadius: 12, display: 'flex', justifyContent: 'center',
+              paddingTop: 5, margin: '0 auto',
+            }}>
+              <div style={{
+                width: 3, height: 7, borderRadius: 2,
+                background: 'var(--fg-muted)',
+                animation: 'scrollDot 2s ease-in-out infinite',
+              }} />
             </div>
           </div>
+
         </div>
       </div>
     </section>
   );
-};
-
-export default Hero; 
+}
