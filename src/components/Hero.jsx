@@ -1,173 +1,69 @@
-import { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Navbar from './Navbar';
 import { personalInfo } from '../data';
-
-function Typewriter({ texts }) {
-  const [idx, setIdx]         = useState(0);
-  const [shown, setShown]     = useState('');
-  const [phase, setPhase]     = useState('typing');
-  const [charIdx, setCharIdx] = useState(0);
-
-  useEffect(() => {
-    let t;
-    const word = texts[idx];
-    if (phase === 'typing') {
-      if (charIdx < word.length) {
-        t = setTimeout(() => { setShown(word.slice(0, charIdx + 1)); setCharIdx(c => c + 1); }, 65);
-      } else {
-        t = setTimeout(() => setPhase('erasing'), 2200);
-      }
-    } else {
-      if (charIdx > 0) {
-        t = setTimeout(() => { setShown(word.slice(0, charIdx - 1)); setCharIdx(c => c - 1); }, 38);
-      } else { setIdx(i => (i + 1) % texts.length); setPhase('typing'); }
-    }
-    return () => clearTimeout(t);
-  }, [phase, charIdx, idx, texts]);
-
-  return (
-    <span style={{ color: 'var(--fg-2)', fontWeight: 700 }}>
-      {shown}<span className="cursor" />
-    </span>
-  );
-}
-
-const SOCIALS = [
-  { key: 'github',   Icon: Github,   label: 'GitHub' },
-  { key: 'linkedin', Icon: Linkedin, label: 'LinkedIn' },
-  { key: 'twitter',  Icon: Twitter,  label: 'X (Twitter)' },
-];
+import { ArrowUpRight } from 'lucide-react';
 
 export default function Hero() {
   const [vis, setVis] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setVis(true), 80); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    const t = setTimeout(() => setVis(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   const anim = (delay = 0) => ({
     opacity: vis ? 1 : 0,
-    transform: vis ? 'translateY(0)' : 'translateY(28px)',
-    transition: `opacity 0.65s ease ${delay}s, transform 0.65s ease ${delay}s`,
+    transform: vis ? 'translateY(0)' : 'translateY(8px)',
+    transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
   });
 
-  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToProjects = () => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
-    <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: 80, background: 'var(--bg)' }}>
-      <div className="wrap" style={{ width: '100%', paddingTop: '2rem', paddingBottom: '4rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '1.75rem' }}>
+    <section
+      id="about"
+      className="bg-white dark:bg-[#18181b] border border-black/[0.06] dark:border-white/[0.06] rounded-[32px] md:rounded-[48px] shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.2)] -mt-4 pl-6 md:pl-14 pr-6 md:pr-14 transition-[background-color,border-color,box-shadow,transform] duration-300 flex flex-col min-h-[calc(100dvh-2.5rem)] md:min-h-[calc(100dvh-3.5rem)] pt-4 pb-6 md:pt-5 md:pb-8"
+    >
+      <Navbar />
 
-          {/* Avatar */}
-          <div style={{ ...anim(0), position: 'relative' }}>
-            <div style={{
-              width: 148, height: 148, borderRadius: '50%', overflow: 'hidden',
-              border: '2px solid var(--border-strong)',
-              boxShadow: 'var(--shadow-md)',
-              background: 'var(--bg-subtle)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <img
-                src={personalInfo.avatar} alt={personalInfo.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={e => {
-                  e.target.style.display = 'none';
-                  const p = e.target.parentElement;
-                  p.style.fontSize = '2.5rem'; p.style.fontWeight = '700';
-                  p.style.color = 'var(--fg-3)';
-                  p.innerHTML = personalInfo.name.split(' ').map(n => n[0]).join('');
-                }}
-              />
-            </div>
-            {/* Status dot */}
-            {/* <span style={{
-              position: 'absolute', bottom: 8, right: 8,
-              width: 14, height: 14, borderRadius: '50%',
-              background: 'var(--fg-muted)',
-              border: '2px solid var(--bg)',
-            }} /> */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center gap-5 md:gap-6 pb-2">
+        <div style={anim(0)} className="relative flex justify-center">
+          <div className="w-[124px] h-[124px] rounded-full overflow-hidden border border-black/[0.06] dark:border-white/[0.06] bg-white dark:bg-[#27272a] flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
+            <img
+              src={personalInfo.avatar}
+              alt={personalInfo.name}
+              className="w-full h-full object-cover"
+              onError={e => {
+                e.target.style.display = 'none';
+                const p = e.target.parentElement;
+                p.style.fontSize = '2rem';
+                p.style.fontWeight = '700';
+                p.style.color = '#4a4a4f';
+                p.innerHTML = personalInfo.name.split(' ').map(n => n[0]).join('');
+              }}
+            />
           </div>
+        </div>
 
-          {/* Name */}
-          <div style={anim(0.1)}>
-            <p style={{ fontSize: '0.9rem', color: 'var(--fg-muted)', marginBottom: '0.4rem', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-              Available for work
-            </p>
-            <h1 style={{
-              fontSize: 'clamp(2.4rem, 5.5vw, 3.6rem)',
-              fontWeight: 800, color: 'var(--fg)',
-              letterSpacing: '-0.035em', lineHeight: 1.05, margin: 0,
-            }}>
-              {personalInfo.name}
-            </h1>
-          </div>
+        <div style={anim(0.15)} className="max-w-[720px]">
+          <h1 className="font-['Plus_Jakarta_Sans'] text-[2.2rem] md:text-[3.8rem] font-extrabold tracking-[-0.035em] leading-[1.05] text-[#141416] dark:text-[#f4f4f5] m-0">
+            Building digital products, brands, and experiences.
+          </h1>
+        </div>
 
-          {/* Typewriter */}
-          <div style={{ ...anim(0.2), fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', minHeight: '2rem' }}>
-            <Typewriter texts={personalInfo.taglines} />
-          </div>
+        <p style={anim(0.25)} className="max-w-[500px] text-[#4a4a4f] dark:text-[#a1a1aa] text-[0.95rem] md:text-[1.05rem] leading-[1.7] m-0 font-medium">
+          I build fast, responsive, and beautiful full-stack web experiences — from database architecture to smooth frontend deployments.
+        </p>
 
-          {/* Description */}
-          <p style={{ ...anim(0.3), maxWidth: 520, color: 'var(--fg-3)', fontSize: '1rem', lineHeight: 1.8, margin: 0 }}>
-            I build fast, accessible, and beautiful web experiences — from database to deployment.
-          </p>
-
-          {/* Social icons */}
-          <div style={{ ...anim(0.35), display: 'flex', gap: '0.65rem' }}>
-            {SOCIALS.map(({ key, Icon, label }) => (
-              <a
-                key={key} href={personalInfo.social[key]}
-                target="_blank" rel="noopener noreferrer"
-                aria-label={label} id={`hero-social-${key}`}
-                style={{
-                  width: 42, height: 42, borderRadius: 10,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'var(--bg-subtle)', border: '1px solid var(--border)',
-                  color: 'var(--fg-3)', textDecoration: 'none',
-                  transition: 'all 0.22s ease',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'var(--fg)';
-                  e.currentTarget.style.color = 'var(--bg)';
-                  e.currentTarget.style.borderColor = 'var(--fg)';
-                  e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'var(--bg-subtle)';
-                  e.currentTarget.style.color = 'var(--fg-3)';
-                  e.currentTarget.style.borderColor = 'var(--border)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <Icon size={18} />
-              </a>
-            ))}
-          </div>
-
-          {/* CTAs */}
-          <div style={{ ...anim(0.4), display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button className="btn btn-primary" onClick={() => scrollTo('projects')}>
-              View Projects
-            </button>
-            <button className="btn btn-ghost" onClick={() => scrollTo('contact')}>
-              Contact Me
-            </button>
-          </div>
-
-          {/* Scroll indicator */}
-          <div style={{ ...anim(0.5) }}>
-            <div style={{
-              width: 22, height: 36, border: '1.5px solid var(--border-strong)',
-              borderRadius: 12, display: 'flex', justifyContent: 'center',
-              paddingTop: 5, margin: '0 auto',
-            }}>
-              <div style={{
-                width: 3, height: 7, borderRadius: 2,
-                background: 'var(--fg-muted)',
-                animation: 'scrollDot 2s ease-in-out infinite',
-              }} />
-            </div>
-          </div>
-
+        <div style={anim(0.35)} className="mt-2">
+          <button
+            onClick={scrollToProjects}
+            className="inline-flex items-center justify-center gap-1.5 px-7 py-3 text-[0.9rem] font-bold rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.03)] bg-[#141416] dark:bg-[#f4f4f5] text-white dark:text-[#18181b] border-0 cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:opacity-95"
+          >
+            <span>View Projects</span>
+            <ArrowUpRight size={16} />
+          </button>
         </div>
       </div>
     </section>

@@ -29,9 +29,9 @@ export default function SearchDropdown({ results, onSelect, onClose }) {
   const isEmpty = results.length === 0;
 
   return (
-    <div className="search-dropdown" ref={ref}>
+    <div className="absolute top-[calc(100%+8px)] right-0 w-[300px] bg-bg-card border border-border rounded-[14px] shadow-xl overflow-hidden z-[200] animate-slide-down" ref={ref}>
       {isEmpty ? (
-        <p style={{ padding: '1rem', fontSize: '0.875rem', color: 'var(--text-muted)', textAlign: 'center' }}>
+        <p className="p-4 text-[0.875rem] text-fg-muted text-center">
           No results found
         </p>
       ) : (
@@ -39,18 +39,18 @@ export default function SearchDropdown({ results, onSelect, onClose }) {
           const Icon = GROUP_ICONS[group] || ArrowRight;
           return (
             <div key={group}>
-              <div className="search-group-title">{group}</div>
+              <div className="py-2 px-3.5 pb-1 text-[0.68rem] font-bold tracking-wider uppercase text-fg-muted">{group}</div>
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="search-item"
+                  className="flex items-center gap-2 py-[9px] px-3.5 text-[0.85rem] text-fg-3 cursor-pointer transition-[background,color] duration-120 hover:bg-bg-subtle hover:text-fg"
                   onClick={() => onSelect(item)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && onSelect(item)}
                 >
-                  <Icon size={13} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-                  <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <Icon size={13} className="text-accent shrink-0" />
+                  <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                     {item.label}
                   </span>
                 </div>

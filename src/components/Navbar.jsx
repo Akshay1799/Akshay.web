@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Search, Sun, Moon, Menu, X, ExternalLink } from 'lucide-react';
+import { Search, Sun, Moon, X, FileText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { navLinks, personalInfo, projects, experience, skills } from '../data';
+import { personalInfo, projects, experience, skills } from '../data';
 
 function SearchDropdown({ results, onClose, onSelect }) {
   const ref = useRef(null);
@@ -17,22 +17,29 @@ function SearchDropdown({ results, onClose, onSelect }) {
   }, {});
 
   return (
-    <div className="search-drop" ref={ref}>
+    <div
+      className="absolute top-[calc(100%+8px)] right-0 w-[290px] bg-white dark:bg-[#18181b] border border-black/[0.06] dark:border-white/[0.06] rounded-[18px] shadow-[0_10px_32px_rgba(0,0,0,0.07)] dark:shadow-[0_10px_32px_rgba(0,0,0,0.3)] overflow-hidden z-[200] animate-slide-down"
+      ref={ref}
+    >
       {results.length === 0 ? (
-        <p style={{ padding: '1rem', textAlign: 'center', fontSize: '0.82rem', color: 'var(--fg-muted)' }}>No results</p>
+        <p className="p-4 text-center text-[0.8rem] text-[#7e7e86] dark:text-[#71717a]">No results found</p>
       ) : (
         Object.entries(grouped).map(([grp, items]) => (
-          <div key={grp}>
-            <div className="sdrop-label">{grp}</div>
+          <div key={grp} className="border-b border-black/[0.06] dark:border-white/[0.06] last:border-0">
+            <div className="py-2 px-3.5 pb-1 text-[0.65rem] font-bold tracking-[0.1em] uppercase text-[#7e7e86] dark:text-[#71717a]">
+              {grp}
+            </div>
             {items.map(item => (
               <div
-                key={item.id} className="sdrop-item"
+                key={item.id}
+                className="flex items-center gap-2 py-[9px] px-3.5 text-[0.8rem] text-[#4a4a4f] dark:text-[#a1a1aa] cursor-pointer transition-[background-color,color] duration-[120ms] hover:bg-white dark:hover:bg-[#27272a] hover:text-[#141416] dark:hover:text-[#f4f4f5]"
                 onClick={() => onSelect(item)}
-                role="button" tabIndex={0}
+                role="button"
+                tabIndex={0}
                 onKeyDown={e => e.key === 'Enter' && onSelect(item)}
               >
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--fg-muted)', flexShrink: 0 }} />
-                {item.label}
+                <span className="w-1.5 h-1.5 rounded-full bg-[#7e7e86] dark:bg-[#71717a] shrink-0" />
+                <span>{item.label}</span>
               </div>
             ))}
           </div>
@@ -44,23 +51,9 @@ function SearchDropdown({ results, onClose, onSelect }) {
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [query, setQuery]       = useState('');
-  const [results, setResults]   = useState([]);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
   const [showDrop, setShowDrop] = useState(false);
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', fn, { passive: true });
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
-
-  useEffect(() => {
-    const fn = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
-    window.addEventListener('resize', fn);
-    return () => window.removeEventListener('resize', fn);
-  }, []);
 
   useEffect(() => {
     if (!query.trim()) { setResults([]); setShowDrop(false); return; }
@@ -73,12 +66,13 @@ export default function Navbar() {
       .map(e => ({ id: e.id, label: `${e.role} @ ${e.company}`, group: 'Experience', section: 'experience', highlight: e.id }));
     const sr = skills.filter(s => s.toLowerCase().includes(q)).slice(0, 5)
       .map(s => ({ id: `sk-${s}`, label: s, group: 'Skills', section: 'skills', highlight: null }));
+
     const all = [...pr, ...er, ...sr];
-    setResults(all); setShowDrop(all.length > 0);
+    setResults(all);
+    setShowDrop(all.length > 0);
   }, [query]);
 
   const scrollTo = id => {
-    setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
@@ -88,134 +82,95 @@ export default function Navbar() {
       setTimeout(() => {
         const el = document.getElementById(item.highlight);
         if (el) {
-          el.style.outline = '2px solid var(--border-strong)';
+          el.style.outline = '2px solid rgba(0, 0, 0, 0.12)';
           el.style.outlineOffset = '4px';
           setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2000);
         }
       }, 650);
     }
-    setQuery(''); setShowDrop(false);
-  };
-
-  const iconBtnStyle = {
-    background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-    color: 'var(--fg-3)', display: 'flex', alignItems: 'center',
-    padding: 7, borderRadius: 8, transition: 'color 0.2s, background 0.2s, transform 0.3s',
+    setQuery('');
+    setShowDrop(false);
   };
 
   return (
-    <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
-      <div className="wrap" style={{ display: 'flex', alignItems: 'center', height: 64, gap: 16 }}>
-
-        {/* Logo */}
-        <button onClick={() => scrollTo('about')} style={{
-          background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-          fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.03em',
-          color: 'var(--fg)', flexShrink: 0,
-        }}>
-          {personalInfo.name.split(' ')[0]}<span style={{ color: 'var(--fg-muted)' }}>.</span>
-        </button>
-
-        {/* Desktop nav links */}
-        <ul className="desktop-only" style={{ display: 'flex', listStyle: 'none', gap: 2, flex: 1 }}>
-          {navLinks.map(lnk => (
-            <li key={lnk.label}>
-              <button onClick={() => scrollTo(lnk.href.slice(1))} style={{
-                background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                padding: '6px 12px', borderRadius: 8,
-                fontSize: '0.875rem', fontWeight: 500, color: 'var(--fg-3)',
-                transition: 'color 0.2s, background 0.2s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.background = 'var(--bg-muted)'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-3)'; e.currentTarget.style.background = 'transparent'; }}
-              >
-                {lnk.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        {/* Right side */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
-
-          {/* Resume */}
-          <a href={personalInfo.resumeUrl} target="_blank" rel="noopener noreferrer"
-            className="btn btn-primary desktop-only"
-            style={{ padding: '7px 16px', fontSize: '0.8rem', borderRadius: 8 }}
+    <header className="w-full flex flex-col md:flex-row md:items-center justify-between gap-4 pt-1 md:pt-2 pb-3 md:pb-4">
+      <div className="flex flex-wrap items-center gap-4 md:gap-5">
+        <div className="flex items-center gap-3">
+          <a
+            href={personalInfo.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.85rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
           >
-            <ExternalLink size={13} /> Resume
+            LinkedIn
           </a>
-
-          {/* Search */}
-          <div style={{ position: 'relative' }} className="desktop-only">
-            <div className="search-pill">
-              <Search size={14} style={{ color: 'var(--fg-muted)', flexShrink: 0 }} />
+          <a
+            href={personalInfo.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.85rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+          >
+            GitHub
+          </a>
+          <a
+            href={personalInfo.social.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.85rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+          >
+            Twitter
+          </a>
+          <div className="relative">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-[#27272a] border border-black/[0.08] dark:border-white/[0.06] rounded-full transition-[border-color,box-shadow] duration-200 focus-within:border-[#141416] dark:focus-within:border-[#f4f4f5]">
+              <Search size={13} className="text-[#7e7e86] dark:text-[#71717a] shrink-0" />
               <input
-                type="text" placeholder="Search…" value={query}
+                type="text"
+                placeholder="Search..."
+                value={query}
                 onChange={e => setQuery(e.target.value)}
                 onFocus={() => query.trim() && setShowDrop(true)}
-                aria-label="Search projects, skills, experience"
+                aria-label="Search"
+                className="bg-transparent border-0 outline-none text-[0.8rem] text-[#141416] dark:text-[#f4f4f5] w-[100px] font-['Plus_Jakarta_Sans'] placeholder:text-[#7e7e86] dark:placeholder:text-[#71717a]"
               />
               {query && (
-                <button onClick={() => { setQuery(''); setShowDrop(false); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--fg-muted)', display: 'flex', padding: 0 }}>
+                <button
+                  onClick={() => { setQuery(''); setShowDrop(false); }}
+                  className="bg-transparent border-0 cursor-pointer text-[#7e7e86] dark:text-[#71717a] flex p-0 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+                >
                   <X size={12} />
                 </button>
               )}
             </div>
-            {showDrop && <SearchDropdown results={results} onSelect={handleSelect} onClose={() => setShowDrop(false)} />}
+            {showDrop && (
+              <SearchDropdown
+                results={results}
+                onSelect={handleSelect}
+                onClose={() => setShowDrop(false)}
+              />
+            )}
           </div>
-
-          {/* Theme toggle */}
-          <button
-            id="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme"
-            style={iconBtnStyle}
-            onMouseEnter={e => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.background = 'var(--bg-muted)'; e.currentTarget.style.transform = 'rotate(22deg)'; }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-3)'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'rotate(0)'; }}
-          >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
-          {/* Hamburger */}
-          <button id="hamburger" className="mobile-only" onClick={() => setMenuOpen(o => !o)} aria-label="Menu"
-            style={{ ...iconBtnStyle, color: 'var(--fg)' }}>
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      {menuOpen && (
-        <div style={{
-          background: 'var(--nav-bg)', backdropFilter: 'blur(20px)',
-          borderTop: '1px solid var(--border)', animation: 'slideDown 0.22s ease',
-        }}>
-          <ul style={{ listStyle: 'none', padding: '0.5rem 1.5rem 1.25rem', display: 'flex', flexDirection: 'column' }}>
-            {navLinks.map(lnk => (
-              <li key={lnk.label}>
-                <button onClick={() => scrollTo(lnk.href.slice(1))} style={{
-                  width: '100%', textAlign: 'left',
-                  background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                  padding: '0.75rem 0', fontSize: '1rem', fontWeight: 500,
-                  color: 'var(--fg)', borderBottom: '1px solid var(--border)',
-                  transition: 'color 0.2s',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'var(--fg-3)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'var(--fg)'}
-                >
-                  {lnk.label}
-                </button>
-              </li>
-            ))}
-            <li style={{ paddingTop: '1rem' }}>
-              <a href={personalInfo.resumeUrl} target="_blank" rel="noopener noreferrer"
-                className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
-                <ExternalLink size={14} /> Resume
-              </a>
-            </li>
-          </ul>
-        </div>
-      )}
-    </nav>
+      <div className="flex flex-wrap items-center gap-5">
+        <a
+          href={personalInfo.resumeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-1.5 py-1 px-3.5 text-[0.75rem] font-bold rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.03)] bg-white dark:bg-[#27272a] text-[#141416] dark:text-[#f4f4f5] border border-black/10 dark:border-white/[0.08] no-underline cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#141416] dark:hover:bg-[#f4f4f5] hover:text-white dark:hover:text-[#18181b] hover:border-[#141416] dark:hover:border-[#f4f4f5] hover:-translate-y-0.5 hover:scale-[1.02]"
+          aria-label="Open resume"
+        >
+          <FileText size={12} />
+          <span>CV</span>
+        </a>
+        <button
+          onClick={toggleTheme}
+          className="rounded-full hover:bg-white dark:hover:bg-[#27272a] text-[#4a4a4f] dark:text-[#a1a1aa] hover:text-[#141416] dark:hover:text-[#f4f4f5] transition-all duration-200 p-1"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
+        </button>
+      </div>
+    </header>
   );
 }

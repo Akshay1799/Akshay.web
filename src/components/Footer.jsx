@@ -1,96 +1,84 @@
-import { Github, Linkedin, Twitter, Heart } from 'lucide-react';
-import { navLinks, personalInfo } from '../data';
-
-const SOCIALS = [
-  { href: personalInfo.social.github,   Icon: Github,   label: 'GitHub' },
-  { href: personalInfo.social.linkedin, Icon: Linkedin, label: 'LinkedIn' },
-  { href: personalInfo.social.twitter,  Icon: Twitter,  label: 'X (Twitter)' },
-];
+import { Handshake, Mail, MessageSquare } from 'lucide-react';
+import { personalInfo } from '../data';
+import { useInView } from '../hooks/useInView';
 
 export default function Footer() {
-  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const [ref, inView] = useInView();
+
+  const anim = (delay = 0) => ({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(8px)',
+    transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+  });
 
   return (
-    <footer id="contact" style={{
-      background: 'var(--bg)',
-      borderTop: '1px solid var(--border)',
-      padding: '3.5rem 0 2rem',
-    }}>
-      <div className="wrap">
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', marginBottom: '2.5rem' }}>
-
-          {/* Logo */}
-          <button onClick={() => scrollTo('about')} style={{
-            background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-            fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.03em',
-            color: 'var(--fg)',
-          }}>
-            {personalInfo.name.split(' ')[0]}<span style={{ color: 'var(--fg-muted)' }}>.</span>
-          </button>
-
-          {/* Nav links */}
-          <nav aria-label="Footer navigation">
-            <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 4, justifyContent: 'center' }}>
-              {navLinks.map(lnk => (
-                <li key={lnk.label}>
-                  <button onClick={() => scrollTo(lnk.href.slice(1))} style={{
-                    background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-                    padding: '6px 10px', borderRadius: 8,
-                    fontSize: '0.875rem', fontWeight: 500, color: 'var(--fg-3)',
-                    transition: 'color 0.2s, background 0.2s',
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.color = 'var(--fg)'; e.currentTarget.style.background = 'var(--bg-muted)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-3)'; e.currentTarget.style.background = 'transparent'; }}
-                  >
-                    {lnk.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Social icons */}
-          <div id="contact-socials" style={{ display: 'flex', gap: '0.65rem' }}>
-            {SOCIALS.map(({ href, Icon, label }) => (
-              <a
-                key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-                style={{
-                  width: 40, height: 40, borderRadius: 10,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: 'var(--bg-subtle)', border: '1px solid var(--border)',
-                  color: 'var(--fg-3)', textDecoration: 'none',
-                  transition: 'all 0.22s ease',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'var(--fg)';
-                  e.currentTarget.style.color = 'var(--bg)';
-                  e.currentTarget.style.borderColor = 'var(--fg)';
-                  e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'var(--bg-subtle)';
-                  e.currentTarget.style.color = 'var(--fg-3)';
-                  e.currentTarget.style.borderColor = 'var(--border)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <Icon size={17} />
-              </a>
-            ))}
-          </div>
+    <footer id="contact" ref={ref} className="w-full flex flex-col gap-10 mt-12 pb-8">
+      <div
+        style={anim(0)}
+        className="bg-white dark:bg-[#18181b] border border-black/[0.06] dark:border-white/[0.06] rounded-[32px] md:rounded-[48px] shadow-[0_2px_8px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.2)] -mt-4 pl-6 md:pl-14 pr-6 md:pr-14 pb-4 transition-[background-color,border-color,box-shadow,transform] duration-300 text-center flex flex-col items-center justify-center gap-7 py-12 md:py-20"
+      >
+        <div className="w-[72px] h-[72px] rounded-full border border-black/[0.06] dark:border-white/[0.06] bg-white dark:bg-[#27272a] flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.03)] select-none">
+          <Handshake size={32} className="text-[#4a4a4f] dark:text-[#a1a1aa]" />
         </div>
 
-        <div style={{ height: 1, background: 'var(--border)', marginBottom: '1.5rem' }} />
+        <h2 className="font-['Plus_Jakarta_Sans'] text-[2rem] md:text-[3.4rem] font-extrabold tracking-[-0.015em] leading-tight  text-[#141416] dark:text-[#f4f4f5] max-w-[560px] m-0">
+          Tell me about your next project
+        </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, textAlign: 'center' }}>
-          <p style={{ fontSize: '0.8rem', color: 'var(--fg-muted)', display: 'flex', alignItems: 'center', gap: 5 }}>
-            Designed &amp; Built by <strong style={{ color: 'var(--fg-3)' }}>{personalInfo.name}</strong>
-          </p>
-          <p style={{ fontSize: '0.75rem', color: 'var(--fg-muted)' }}>
-            © {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
-          </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 mt-2">
+          <a
+            href="mailto:akshayladne@gmail.com"
+            className="inline-flex items-center justify-center gap-1.5 px-7 py-3 text-[0.875rem] font-bold rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.03)] bg-[#141416] dark:bg-[#f4f4f5] text-white dark:text-[#18181b] no-underline cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:opacity-95"
+          >
+            <Mail size={16} />
+            <span>Email Me</span>
+          </a>
+          <a
+            href={personalInfo.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 px-7 py-3 text-[0.875rem] font-bold rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.03)] bg-white dark:bg-[#27272a] text-[#141416] dark:text-[#f4f4f5] border border-black/10 dark:border-white/[0.08] no-underline cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-[#141416] dark:hover:bg-[#f4f4f5] hover:text-white dark:hover:text-[#18181b] hover:border-[#141416] dark:hover:border-[#f4f4f5] hover:-translate-y-0.5"
+          >
+            <MessageSquare size={16} />
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+
+      <div
+        style={anim(0.15)}
+        className="w-full flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-black/[0.06] dark:border-white/[0.06] text-[#7e7e86] dark:text-[#71717a] font-medium text-[0.8rem]"
+      >
+        <div className="select-none">
+          <span>© {new Date().getFullYear()} Akshay Ladne. All rights reserved.</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <a
+            href={personalInfo.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.8rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+          >
+            LinkedIn
+          </a>
+          <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span>
+          <a
+            href={personalInfo.social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.8rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+          >
+            GitHub
+          </a>
+          <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span>
+          <a
+            href={personalInfo.social.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-['Plus_Jakarta_Sans'] text-[0.8rem] font-medium text-[#4a4a4f] dark:text-[#a1a1aa] no-underline bg-transparent border-0 cursor-pointer transition-colors duration-200 hover:text-[#141416] dark:hover:text-[#f4f4f5]"
+          >
+            Twitter
+          </a>
         </div>
       </div>
     </footer>
