@@ -47,7 +47,7 @@ export default function Hero() {
         </div>
 
         <div style={anim(0.15)} className="max-w-[720px]">
-          <h1 className="font-['Plus_Jakarta_Sans'] text-[2.2rem] md:text-[3.8rem] font-extrabold tracking-[-0.035em] leading-[1.05] text-[#141416] dark:text-[#f4f4f5] m-0">
+          <h1 className="font-['Plus_Jakarta_Sans'] text-[2.2rem] md:text-[3.8rem] font-extrabold tracking-[-0.015em] leading-[1.05] text-[#141416] dark:text-[#f4f4f5] m-0">
             Building digital products, brands, and experiences.
           </h1>
         </div>

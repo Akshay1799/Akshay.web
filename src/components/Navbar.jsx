@@ -168,7 +168,7 @@ export default function Navbar() {
           className="rounded-full hover:bg-white dark:hover:bg-[#27272a] text-[#4a4a4f] dark:text-[#a1a1aa] hover:text-[#141416] dark:hover:text-[#f4f4f5] transition-all duration-200 p-1"
           aria-label="Toggle theme"
         >
-          {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
+          {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </div>
     </header>

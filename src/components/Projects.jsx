@@ -46,7 +46,7 @@ function ProjectCard({ item }) {
 
       <div className="flex flex-col flex-1 p-8 md:p-10 justify-between gap-6">
         <div className="flex flex-col gap-3">
-          <h3 className="font-['Plus_Jakarta_Sans'] text-[1.1rem] font-bold text-[#141416] dark:text-[#f4f4f5] tracking-tight leading-snug">
+          <h3 className="font-['Plus_Jakarta_Sans'] text-[1.1rem] font-bold text-[#141416] dark:text-[#f4f4f5] tracking-wide leading-snug">
             {item.title}
           </h3>
           <p className="text-[0.85rem] text-[#4a4a4f] dark:text-[#a1a1aa] leading-[1.6] font-medium">
