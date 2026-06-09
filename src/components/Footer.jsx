@@ -49,10 +49,11 @@ export default function Footer() {
         style={anim(0.15)}
         className="w-full flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-black/[0.06] dark:border-white/[0.06] text-[#7e7e86] dark:text-[#71717a] font-medium text-[0.8rem]"
       >
-        <div className="select-none">
-          <span>© {new Date().getFullYear()} Akshay Ladne. All rights reserved.</span>
+        <div className="select-none text-center md:text-left">
+          <span>© {new Date().getFullYear()} Akshay Ladne.</span>
+          <span className="block md:inline md:ml-1">All rights reserved.</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <a
             href={personalInfo.social.linkedin}
             target="_blank"
@@ -61,7 +62,7 @@ export default function Footer() {
           >
             LinkedIn
           </a>
-          <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span>
+          {/* <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span> */}
           <a
             href={personalInfo.social.github}
             target="_blank"
@@ -70,7 +71,7 @@ export default function Footer() {
           >
             GitHub
           </a>
-          <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span>
+          {/* <span className="text-[#7e7e86]/40 dark:text-[#71717a]/40 select-none">/</span> */}
           <a
             href={personalInfo.social.twitter}
             target="_blank"
