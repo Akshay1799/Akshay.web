@@ -48,7 +48,7 @@ export const experience = [
     location: 'Remote',
     description: [
       'Designed and shipped 3 client websites using React and Tailwind CSS.',
-      'Achieved Lighthouse performance scores of 95+ for every project delivered.',
+      'Achieved Lighthouse performance sres of 95+ for every project delivered.',
     ],
     tech: ['React', 'Tailwind CSS', 'Redux Toolkit', 'JavaScript', 'Axios'],
   },

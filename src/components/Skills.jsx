@@ -8,13 +8,14 @@ import {
   SiMongodb, SiPostgresql, SiRedis, SiFirebase,
   SiGit, SiGithub, SiDocker, SiVercel, SiAmazons3,
   SiFigma, SiJest, SiPostman, SiLinux, SiSwagger,
+  SiThunderbird,
 } from 'react-icons/si';
 
 const CAPABILITIES = [
   {
-    icon: Monitor,
-    title: 'Frontend Development',
-    desc: 'Building responsive, pixel-perfect, and highly interactive user interfaces using React, Next.js, and modern CSS.',
+    icon: Layers,
+    title: 'Full-Stack Systems',
+    desc: 'Integrating databases, microservices, secure state management, payment gateways, and end-to-end workflows.',
   },
   {
     icon: Server,
@@ -22,46 +23,32 @@ const CAPABILITIES = [
     desc: 'Designing scalable RESTful APIs, robust database architectures, and secure server-side logic in Node.js and Express.',
   },
   {
-    icon: Layers,
-    title: 'Full-Stack Systems',
-    desc: 'Integrating databases, microservices, secure state management, payment gateways, and end-to-end workflows.',
-  },
-  {
-    icon: Terminal,
-    title: 'DevOps & Tooling',
-    desc: 'Managing version control, containerized workflows, cloud storage hosting, and automated deployment pipelines.',
+    icon: Monitor,
+    title: 'Frontend Development',
+    desc: 'Building responsive, pixel-perfect, and highly interactive user interfaces using React, Next.js, and modern CSS.',
   },
 ];
 
 const SKILL_ICONS = {
   'JavaScript': SiJavascript,
   'TypeScript': SiTypescript,
-  'Python': SiPython,
   'HTML5': SiHtml5,
   'CSS3': SiCss3,
   'React': SiReact,
-  'Next.js': SiNextdotjs,
   'Redux Toolkit': SiRedux,
   'Tailwind CSS': SiTailwindcss,
   'Framer Motion': SiFramer,
   'Node.js': SiNodedotjs,
   'Express.js': SiExpress,
   'REST APIs': SiSwagger,
-  'GraphQL': SiGraphql,
   'Socket.io': SiSocketdotio,
   'MongoDB': SiMongodb,
-  'PostgreSQL': SiPostgresql,
   'Redis': SiRedis,
-  'Firebase': SiFirebase,
   'Git': SiGit,
   'GitHub': SiGithub,
-  'Docker': SiDocker,
   'Vercel': SiVercel,
-  'AWS S3': SiAmazons3,
-  'Figma': SiFigma,
-  'Jest': SiJest,
   'Postman': SiPostman,
-  'Linux': SiLinux,
+  'Thunder Client': SiThunderbird,
 };
 
 function SkillLogo({ skill }) {
@@ -113,7 +100,7 @@ export default function Skills() {
 
       <div
         style={anim(0.2)}
-        className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-10 mt-10 px-4"
+        className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-6 lg:gap-10 mt-10 px-4"
       >
         {CAPABILITIES.map((cap, idx) => {
           const Icon = cap.icon;
