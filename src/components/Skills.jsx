@@ -72,7 +72,7 @@ export default function Skills() {
 
   const anim = (delay = 0) => ({
     opacity: inView ? 1 : 0,
-    transform: inView ? 'translateY(0)' : 'translateY(8px)',
+    transform: inView ? 'translateY(0)' : 'translateY(30px)',
     transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
   });
 

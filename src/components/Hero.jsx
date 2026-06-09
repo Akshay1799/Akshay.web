@@ -9,13 +9,11 @@ export default function Hero() {
     const t = setTimeout(() => setVis(true), 100);
     return () => clearTimeout(t);
   }, []);
-
   const anim = (delay = 0) => ({
     opacity: vis ? 1 : 0,
-    transform: vis ? 'translateY(0)' : 'translateY(8px)',
+    transform: vis ? 'translateY(0)' : 'translateY(30px)',
     transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
   });
-
   const scrollToProjects = () => {
     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };

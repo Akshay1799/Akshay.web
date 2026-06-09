@@ -14,7 +14,7 @@ export function useInView(options = {}) {
           obs.unobserve(el);
         }
       },
-      { threshold: 0.01, rootMargin: '0px 0px 150px 0px', ...options }
+      { threshold: 0.01, rootMargin: '0px 0px -80px 0px', ...options }
     );
     obs.observe(el);
     return () => obs.disconnect();
