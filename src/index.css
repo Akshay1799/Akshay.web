@@ -16,3 +16,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 }
+
+.group:hover .animate-infinite-scroll {
+  animation-play-state: paused;
+}

@@ -131,7 +131,7 @@ export default function Skills() {
       </div>
 
       <div style={anim(0.35)} className="w-full overflow-hidden group px-4">
-        <div className="flex w-max items-center animate-infinite-scroll group-hover:[animation-play-state:paused]">
+        <div className="flex w-max items-center animate-infinite-scroll group-hover:animate-paused">
           {marqueeItems.map((skill, idx) => (
             <SkillLogo key={`${skill}-${idx}`} skill={skill} />
           ))}
