@@ -29,60 +29,61 @@ export const experience = [
     id: 'exp-1',
     company: 'Codes for Tomorrow',
     role: 'Backend Developer Intern',
-    startDate: 'July 2025',
+    startDate: 'Oct 2025',
     endDate: 'Dec 2025',
     location: 'Indore',
     description: [
-      'Built RESTful APIs with Node.js and Express serving 50 k+ daily requests.',
-      'Migrated legacy jQuery frontend to React 18, cutting bundle size by 40 %.',
-      'Integrated Stripe payment gateway end-to-end.',
+      'Planned and built production-ready REST API endpoints for core application features using Node.js and Express.js.',
+      'Applied JWT-based authentication with HTTP-only cookies and session management, securing all protected routes via middleware.',
+      'Designed MongoDB schemas using Mongoose with proper field validation and data modeling for scalable data storage.',
+      'Tested and debugged API endpoints using Postman and Thunder Client, ensuring correct request/response cycles across all routes.',
+      'Collaborated with the team using Git and GitHub, following branch-based workflows for feature development.',
     ],
-    tech: ['Node.js', 'MongoDB', 'Express', 'JWT', 'REST APIs'],
+    tech: ['Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT', 'REST APIs'],
   },
   {
     id: 'exp-2',
     company: 'Teachnook',
     role: 'Frontend Developer Intern',
     startDate: 'March 2025',
-    endDate: 'June 2025',
+    endDate: 'May 2025',
     location: 'Remote',
     description: [
-      'Designed and shipped 3 client websites using React and Tailwind CSS.',
-      'Achieved Lighthouse performance sres of 95+ for every project delivered.',
+      'Built responsive web pages using React.js, HTML5, CSS3, and Tailwind CSS.',
+      'Identified and resolved 20+ UI bugs across the codebase and refactored 10+ components for reusability.',
+      'Improved component render performance using React best practices, improving page load experience.',
+      'Participated in code reviews and incorporated feedback from senior developers to maintain code quality.',
     ],
-    tech: ['React', 'Tailwind CSS', 'Redux Toolkit', 'JavaScript', 'Axios'],
+    tech: ['React.js', 'HTML5', 'CSS3', 'JavaScript', 'Tailwind CSS'],
   },
 ];
 
 export const projects = [
   {
     id: 'proj-1',
-    title: 'Linkly - A URL Shortener App',
+    title: 'Linkly - URL Shortener',
     description:
-      'Linkly is a URL shortener that allows you to shorten long URLs and track their analytics. Built with React, Node.js, MongoDB, Express, and JWT.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT', 'REST APIs', 'Axios'],
+      'Built a full-stack URL shortener with secure JWT authentication using 2 token types, HTTP-only cookies, and token rotation. Created 10+ REST APIs following MVC architecture with pagination, input validation via Zod, and MongoDB indexing. Deployed on Render.',
+    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT', 'Tailwind CSS', 'REST APIs', 'Zod'],
     image: '/projects/linkly.jpg',
     liveUrl:   'https://linkly.vercel.app',
     githubUrl: 'https://github.com/Akshay1799/linkly',
   },
   {
     id: 'proj-2',
-    title: 'Notes Store App',
+    title: 'Notes Store Web Application',
     description:
-      'Notes Store is a note-taking app that allows you to store your notes and access them from anywhere. Built with React, Node.js, MongoDB, Express, and JWT.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT', 'REST APIs', 'Axios'],
+      'Built complete CRUD functionality with JWT-based authentication and Express.js middleware chains. Enhanced REST APIs following MVC architecture with Mongoose schema validation, centralized error handling, and full-text search.',
+    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT', 'Tailwind CSS', 'REST APIs'],
     image: '/projects/notestore.jpg',
     liveUrl:   'https://note-app-6u34.vercel.app/',
     githubUrl: 'https://github.com/Akshay1799/notestore',
   },
-  
 ];
 
 export const skills = [
-  'JavaScript', 'TypeScript', 'Python', 'HTML5', 'CSS3',
-  'React', 'Next.js', 'Redux Toolkit', 'Tailwind CSS', 'Framer Motion',
-  'Node.js', 'Express.js', 'REST APIs', 'GraphQL', 'Socket.io',
-  'MongoDB', 'PostgreSQL', 'Redis', 'Firebase',
-  'Git', 'GitHub', 'Docker', 'Vercel', 'AWS S3',
-  'Figma', 'Jest', 'Postman', 'Linux',
+  'React.js', 'JavaScript (ES6+)', 'Redux Toolkit', 'Tailwind CSS', 'HTML5', 'CSS3',
+  'Node.js', 'Express.js', 'REST APIs', 'JWT Authentication', 'Zod', 'Axios',
+  'MongoDB', 'Mongoose ODM', 'Schema Design',
+  'Git', 'GitHub', 'Postman', 'Vercel', 'Render',
 ];

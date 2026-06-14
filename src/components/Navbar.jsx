@@ -18,7 +18,7 @@ function SearchDropdown({ results, onClose, onSelect }) {
 
   return (
     <div
-      className="absolute top-[calc(100%+8px)] right-0 w-[290px] bg-white dark:bg-[#18181b] border border-black/[0.06] dark:border-white/[0.06] rounded-[18px] shadow-[0_10px_32px_rgba(0,0,0,0.07)] dark:shadow-[0_10px_32px_rgba(0,0,0,0.3)] overflow-hidden z-[200] animate-slide-down"
+      className="absolute top-[calc(100%+8px)] left-0 right-0 w-auto md:left-auto md:right-0 md:w-[290px] bg-white dark:bg-[#18181b] border border-black/[0.06] dark:border-white/[0.06] rounded-[18px] shadow-[0_10px_32px_rgba(0,0,0,0.07)] dark:shadow-[0_10px_32px_rgba(0,0,0,0.3)] overflow-hidden z-[200] animate-slide-down"
       ref={ref}
     >
       {results.length === 0 ? (
